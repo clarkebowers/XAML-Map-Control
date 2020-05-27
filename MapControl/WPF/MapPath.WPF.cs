@@ -67,6 +67,25 @@ namespace MapControl
             }
         }
 
+        protected void AddEllipsesLocations(
+            GeometryCollection group, 
+            IEnumerable<Location> locations, 
+            double longitudeOffset)
+        {
+            var points = locations.Select(location => LocationToView(location, longitudeOffset));
+            foreach (var point in points)
+            {
+                var ellipse = new EllipseGeometry
+                {
+                    RadiusX = 1,
+                    RadiusY = 1,
+                    Center = point,
+                };
+
+                group.Add(ellipse);
+            }
+        }
+
         #endregion
     }
 }

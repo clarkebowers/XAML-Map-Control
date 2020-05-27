@@ -41,14 +41,6 @@ namespace MapControl
         }
 
         /// <summary>
-        /// Indicates if this is a web mercator projection, i.e. compatible with MapTileLayer.
-        /// </summary>
-        public virtual bool IsWebMercator
-        {
-            get { return false; }
-        }
-
-        /// <summary>
         /// Gets the absolute value of the minimum and maximum latitude that can be transformed.
         /// </summary>
         public virtual double MaxLatitude
@@ -95,23 +87,5 @@ namespace MapControl
             return new BoundingBox(sw.Latitude, sw.Longitude, ne.Latitude, ne.Longitude);
         }
 
-        /// <summary>
-        /// Gets the CRS parameter value for a WMS GetMap request.
-        /// </summary>
-        public virtual string GetCrsValue()
-        {
-            return CrsId.StartsWith("AUTO:") || CrsId.StartsWith("AUTO2:")
-                ? string.Format(CultureInfo.InvariantCulture, "{0},1,{1},{2}", CrsId, Center.Longitude, Center.Latitude)
-                : CrsId;
-        }
-
-        /// <summary>
-        /// Gets the BBOX parameter value for a WMS GetMap request.
-        /// </summary>
-        public virtual string GetBboxValue(Rect rect)
-        {
-            return string.Format(CultureInfo.InvariantCulture,
-                "{0},{1},{2},{3}", rect.X, rect.Y, (rect.X + rect.Width), (rect.Y + rect.Height));
-        }
     }
 }

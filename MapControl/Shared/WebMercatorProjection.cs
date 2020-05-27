@@ -27,11 +27,6 @@ namespace MapControl
             get { return true; }
         }
 
-        public override bool IsWebMercator
-        {
-            get { return true; }
-        }
-
         public override double MaxLatitude
         {
             get { return maxLatitude; }

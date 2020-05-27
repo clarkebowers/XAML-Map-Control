@@ -24,9 +24,7 @@ namespace MapControl.Projections
     {
         private ICoordinateSystem coordinateSystem;
         private bool isNormalCylindrical;
-        private bool isWebMercator;
         private double scaleFactor;
-        private string bboxFormat;
 
         public IMathTransform LocationToMapTransform { get; private set; }
         public IMathTransform MapToLocationTransform { get; private set; }
@@ -69,16 +67,12 @@ namespace MapControl.Projections
                         (centralParallel == null || centralParallel.Value == 0d) &&
                         (falseEasting == null || falseEasting.Value == 0d) &&
                         (falseNorthing == null || falseNorthing.Value == 0d);
-                    isWebMercator = CrsId == "EPSG:3857" || CrsId == "EPSG:900913";
                     scaleFactor = 1d;
-                    bboxFormat = "{0},{1},{2},{3}";
                 }
                 else
                 {
                     isNormalCylindrical = true;
-                    isWebMercator = false;
                     scaleFactor = Wgs84MetersPerDegree;
-                    bboxFormat = "{1},{0},{3},{2}";
                 }
             }
         }
@@ -97,11 +91,6 @@ namespace MapControl.Projections
         public override bool IsNormalCylindrical
         {
             get { return isNormalCylindrical; }
-        }
-
-        public override bool IsWebMercator
-        {
-            get { return isWebMercator; }
         }
 
         public override Point LocationToMap(Location location)
@@ -130,11 +119,5 @@ namespace MapControl.Projections
             return new Location(coordinate.Y, coordinate.X);
         }
 
-        public override string GetBboxValue(Rect rect)
-        {
-            return string.Format(CultureInfo.InvariantCulture, bboxFormat,
-                rect.X / scaleFactor, rect.Y / scaleFactor,
-                (rect.X + rect.Width) / scaleFactor, (rect.Y + rect.Height) / scaleFactor);
-        }
     }
 }

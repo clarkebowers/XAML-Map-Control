@@ -11,10 +11,7 @@ namespace MapControl
 {
     public class AutoEquirectangularProjection : MapProjection
     {
-        public AutoEquirectangularProjection()
-        {
-            CrsId = "AUTO2:42004";
-        }
+        public AutoEquirectangularProjection() { }
 
         public override Point LocationToMap(Location location)
         {

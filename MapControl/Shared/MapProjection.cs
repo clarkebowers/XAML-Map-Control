@@ -23,11 +23,6 @@ namespace MapControl
         public static readonly double Wgs84Eccentricity = Math.Sqrt((2d - Wgs84Flattening) * Wgs84Flattening);
 
         /// <summary>
-        /// Gets or sets the WMS 1.3.0 CRS identifier.
-        /// </summary>
-        public string CrsId { get; set; } = string.Empty;
-
-        /// <summary>
         /// Gets or sets the projection center.
         /// </summary>
         public Location Center { get; set; } = new Location();

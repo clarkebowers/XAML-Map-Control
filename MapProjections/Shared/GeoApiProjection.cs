@@ -49,10 +49,6 @@ namespace MapControl.Projections
                     .CreateFromCoordinateSystems(coordinateSystem, GeographicCoordinateSystem.WGS84)
                     .MathTransform;
 
-                CrsId = (!string.IsNullOrEmpty(coordinateSystem.Authority) && coordinateSystem.AuthorityCode > 0)
-                    ? string.Format("{0}:{1}", coordinateSystem.Authority, coordinateSystem.AuthorityCode)
-                    : "";
-
                 var projection = (coordinateSystem as IProjectedCoordinateSystem)?.Projection;
 
                 if (projection != null)

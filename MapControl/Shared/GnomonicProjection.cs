@@ -14,10 +14,7 @@ namespace MapControl
     /// </summary>
     public class GnomonicProjection : AzimuthalProjection
     {
-        public GnomonicProjection()
-        {
-            CrsId = "AUTO2:97001"; // GeoServer non-standard CRS ID
-        }
+        public GnomonicProjection() { }
 
         public override Point LocationToMap(Location location)
         {

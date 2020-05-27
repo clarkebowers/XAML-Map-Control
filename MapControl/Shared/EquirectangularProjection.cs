@@ -19,9 +19,7 @@ namespace MapControl
     public class EquirectangularProjection : MapProjection
     {
         public EquirectangularProjection()
-        {
-            CrsId = "EPSG:4326";
-        }
+        { }
 
         public override bool IsNormalCylindrical
         {

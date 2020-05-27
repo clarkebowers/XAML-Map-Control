@@ -14,10 +14,7 @@ namespace MapControl
     /// </summary>
     public class StereographicProjection : AzimuthalProjection
     {
-        public StereographicProjection()
-        {
-            CrsId = "AUTO2:97002"; // GeoServer non-standard CRS ID
-        }
+        public StereographicProjection() { }
 
         public override Point LocationToMap(Location location)
         {

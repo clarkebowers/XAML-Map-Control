@@ -3,7 +3,10 @@
 // Licensed under the Microsoft Public License (Ms-PL)
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace MapControl
 {
@@ -76,8 +79,8 @@ namespace MapControl
                 }
 
                 location = new Location(
-                    double.Parse(values[0], NumberStyles.Float, CultureInfo.InvariantCulture),
-                    double.Parse(values[1], NumberStyles.Float, CultureInfo.InvariantCulture));
+                    double.Parse(values[1], NumberStyles.Float, CultureInfo.InvariantCulture),
+                    double.Parse(values[0], NumberStyles.Float, CultureInfo.InvariantCulture));
             }
 
             return location;

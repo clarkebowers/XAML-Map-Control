@@ -63,5 +63,18 @@ namespace MapControl
 
             base.ClearItems();
         }
+
+
+        /// <summary>
+        /// Find the center of the bounding box of a collection of locations
+        /// </summary>
+        /// <param name="locations"></param>
+        /// <returns></returns>
+        public static Location Center(PolygonCollection collection)
+        {
+            var locations = collection.SelectMany(locs => locs, (locs, l) => l);
+            return LocationCollection.Center(locations);
+        }
+
     }
 }

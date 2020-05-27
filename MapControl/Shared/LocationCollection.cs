@@ -36,5 +36,23 @@ namespace MapControl
 
             return new LocationCollection(strings.Select(l => Location.Parse(l)));
         }
+
+
+        /// <summary>
+        /// Find the center of the bounding box of a collection of locations
+        /// </summary>
+        /// <param name="locations"></param>
+        /// <returns></returns>
+        public static Location Center(IEnumerable<Location> locations)
+        {
+            var minLon = locations.Min(l => l.Longitude);
+            var maxLon = locations.Max(l => l.Longitude);
+            var minLat = locations.Min(l => l.Latitude);
+            var maxLat = locations.Max(l => l.Latitude);
+            return new Location(
+                (minLat + maxLat) / 2,
+                (minLon + maxLon) / 2);
+        }
+
     }
 }

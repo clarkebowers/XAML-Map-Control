@@ -100,9 +100,6 @@
     <EnableGatekeeperAnalysis>false</EnableGatekeeperAnalysis>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Shared\MapLayers.cs">
-      <Link>MapLayers.cs</Link>
-    </Compile>
     <Compile Include="..\Shared\MapViewModel.cs">
       <Link>MapViewModel.cs</Link>
     </Compile>

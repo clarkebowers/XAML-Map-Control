@@ -21,7 +21,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="..\Shared\MapLayers.cs" Link="MapLayers.cs" />
         <Compile Include="..\Shared\MapViewModel.cs" Link="MapViewModel.cs" />
     </ItemGroup>
 

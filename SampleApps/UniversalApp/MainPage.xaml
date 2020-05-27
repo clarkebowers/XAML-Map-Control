@@ -103,7 +103,6 @@
         </Grid.RowDefinitions>
         <map:Map x:Name="map" MinZoomLevel="2" MaxZoomLevel="20" ZoomLevel="11" ManipulationMode="All"
                  Center="{x:Bind ViewModel.MapCenter, Mode=TwoWay}"
-                 MapLayer="{x:Bind ViewModel.MapLayers.CurrentMapLayer, Mode=OneWay}"
                  MapProjection="{Binding SelectedValue, ElementName=projectionComboBox,
                                          FallbackValue={StaticResource WebMercatorProjection},
                                          TargetNullValue={StaticResource WebMercatorProjection}}">
@@ -173,11 +172,6 @@
                     <TextBlock Text="Image Opacity" HorizontalAlignment="Center" Foreground="Gray" FontSize="14"/>
                     <Slider Margin="10,-10,10,-10" Width="100" Value="50" ValueChanged="ImageOpacitySliderValueChanged"/>
                 </StackPanel>
-                <CheckBox Margin="10" VerticalAlignment="Center" Content="Seamarks"
-                          Checked="SeamarksChecked" Unchecked="SeamarksUnchecked"/>
-                <ComboBox Width="250" Margin="10" VerticalAlignment="Center"
-                          ItemsSource="{Binding MapLayers.MapLayerNames}"
-                          SelectedItem="{Binding MapLayers.CurrentMapLayerName, Mode=TwoWay}"/>
                 <ComboBox x:Name="projectionComboBox" Width="150" Margin="10" VerticalAlignment="Bottom"
                           SelectedIndex="0" SelectedValuePath="Tag"
                           SelectedValue="{Binding MapProjection, ElementName=map, Mode=TwoWay}">

@@ -41,17 +41,18 @@ namespace MapControl
 
         protected override void UpdateData()
         {
-            var group = ((GeometryGroup)Data).Children;
-            group.Clear();
-
-            if (ParentMap != null && Locations != null)
+            if (Data != null)
             {
-                var longitudeOffset = GetLongitudeOffset(Location ?? Locations.FirstOrDefault());
+                var group = ((GeometryGroup)Data).Children;
 
-                AddEllipsesLocations(group, Locations, longitudeOffset);
+                if (ParentMap != null && Locations != null)
+                {
+                    group.Clear();
+                    var longitudeOffset = GetLongitudeOffset(Location ?? Locations.FirstOrDefault());
+
+                    AddEllipsesLocations(group, Locations, longitudeOffset);
+                }
             }
-
-            group.Freeze();
         }
     }
 }

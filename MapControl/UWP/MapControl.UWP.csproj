@@ -56,6 +56,9 @@
     <Compile Include="..\Shared\CenteredBoundingBox.cs">
       <Link>CenteredBoundingBox.cs</Link>
     </Compile>
+    <Compile Include="..\Shared\EckertIVProjection.cs">
+      <Link>EckertIVProjection.cs</Link>
+    </Compile>
     <Compile Include="..\Shared\EquirectangularProjection.cs">
       <Link>EquirectangularProjection.cs</Link>
     </Compile>

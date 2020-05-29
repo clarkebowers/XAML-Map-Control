@@ -52,10 +52,12 @@
       <Compile Remove="..\Shared\ImageLoader.cs" />
       <Compile Remove="..\Shared\MapTileLayer.cs" />
       <Compile Remove="..\Shared\MapTileLayerBase.cs" />
+      <Compile Remove="..\Shared\RobinsonProjection.cs" />
       <Compile Remove="..\Shared\Tile.cs" />
       <Compile Remove="..\Shared\TileImageLoader.cs" />
       <Compile Remove="..\Shared\TileMatrix.cs" />
       <Compile Remove="..\Shared\TileSource.cs" />
+      <Compile Remove="..\Shared\WinkelTripelProjection.cs" />
       <Compile Remove="..\Shared\WmsImageLayer.cs" />
       <Compile Remove="..\Shared\WmtsCapabilities.cs" />
       <Compile Remove="..\Shared\WmtsTileLayer.cs" />
@@ -63,5 +65,9 @@
       <Compile Remove="..\Shared\WmtsTileMatrixLayer.cs" />
       <Compile Remove="..\Shared\WmtsTileMatrixSet.cs" />
       <Compile Remove="..\Shared\WmtsTileSource.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="System.Collections.Immutable" Version="1.7.1" />
     </ItemGroup>
 </Project>

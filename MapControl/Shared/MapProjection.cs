@@ -4,6 +4,7 @@
 
 using System;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 #if WINDOWS_UWP
 using Windows.Foundation;
 #else
@@ -80,6 +81,17 @@ namespace MapControl
             var ne = MapToLocation(new Point(rect.X + rect.Width, rect.Y + rect.Height));
 
             return new BoundingBox(sw.Latitude, sw.Longitude, ne.Latitude, ne.Longitude);
+        }
+
+        /// <summary>
+        /// Logitude should be +/-180 (π)
+        /// </summary>
+        /// <param name="longitude"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected double NormalizeLongitude(double longitude)
+        {
+            return longitude % 180.0;
         }
 
     }

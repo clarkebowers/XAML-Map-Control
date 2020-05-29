@@ -94,6 +94,7 @@
         <map:OrthographicProjection x:Key="OrthographicProjection"/>
         <map:GnomonicProjection x:Key="GnomonicProjection"/>
         <map:StereographicProjection x:Key="StereographicProjection"/>
+        <map:EckertIVProjection x:Key="EckertIVProjection"/>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -181,6 +182,7 @@
                     <ComboBoxItem Content="Orthographic" Tag="{StaticResource OrthographicProjection}"/>
                     <ComboBoxItem Content="Gnomonic" Tag="{StaticResource GnomonicProjection}"/>
                     <ComboBoxItem Content="Stereographic" Tag="{StaticResource StereographicProjection}"/>
+                    <ComboBoxItem Content="Eckert IV" Tag="{StaticResource EckertIVProjection}"/>
                 </ComboBox>
             </StackPanel>
         </Grid>

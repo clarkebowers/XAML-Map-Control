@@ -5,9 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Linq;
 using System.Runtime.CompilerServices;
 #if WINDOWS_UWP
 using Windows.Foundation;
@@ -26,8 +23,8 @@ namespace MapControl
     /// </summary>
     public class EckertIVProjection : MapProjection
     {
-        private static readonly double xConst = 2.0 / Math.Sqrt(4.0 * Math.PI + Math.PI * Math.PI);
-        private static readonly double yConst = 2.0 * Math.Sqrt(Math.PI / (4.0 + Math.PI));
+        private static readonly double xConst = 2.0 * Wgs84MetersPerDegree / Math.Sqrt(4.0 * Math.PI + Math.PI * Math.PI);
+        private static readonly double yConst = 2.0 * Math.Sqrt(Math.PI / (4.0 + Math.PI)) * Wgs84EquatorialRadius;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double DegreesToRadians(double degrees)
@@ -1937,18 +1934,28 @@ namespace MapControl
         public override Point LocationToMap(Location location)
         {
             var scale = getScale(location);
-            var x = xConst * Wgs84MetersPerDegree * LongitudeOffset(location) * (1 + scale.thetaCos);
-            var y = yConst * Wgs84EquatorialRadius * scale.thetaSin;
+            var x = xConst * LongitudeOffset(location) * (1 + scale.thetaCos);
+            var y = yConst * scale.thetaSin;
 
             return new Point(x, y);
         }
 
+        /// <summary>
+        /// Inverse formulae
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
         public override Location MapToLocation(Point point)
         {
-            //TODO: this is wrong, recode
-            return new Location(
-                point.Y / Wgs84MetersPerDegree,
-                point.X / Wgs84MetersPerDegree);
+            var θ = Math.Asin(point.Y / yConst);
+            var sinθ = Math.Sin(θ);
+            var cosθ = Math.Cos(θ);
+            var φ = Math.Asin((θ + sinθ * cosθ + 2.0 * sinθ)
+                / (2.0 + Math.PI / 2.0));
+            var λ = Center.Longitude + 
+                (point.X / (xConst * (1 + cosθ)));
+
+            return new Location(φ, λ);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

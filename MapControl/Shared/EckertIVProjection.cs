@@ -23,37 +23,30 @@ namespace MapControl
     /// </summary>
     public class EckertIVProjection : MapProjection
     {
-        private static readonly double xConst = 2.0 * Wgs84MetersPerDegree / Math.Sqrt(4.0 * Math.PI + Math.PI * Math.PI);
-        private static readonly double yConst = 2.0 * Math.Sqrt(Math.PI / (4.0 + Math.PI)) * Wgs84EquatorialRadius;
+        private const double TwoPiHalf = 2.0 + Math.PI / 2.0;
+        private static readonly double xConst = 
+            2.0 * Wgs84MetersPerDegree / Math.Sqrt(4.0 * Math.PI + Math.PI * Math.PI);
+        private static readonly double yConst = 
+            2.0 * Math.Sqrt(Math.PI / (4.0 + Math.PI)) * Wgs84EquatorialRadius;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double DegreesToRadians(double degrees)
         {
             return degrees / 180.0 * Math.PI;
         }
-
-        private class ScaleCompareLatitude : IComparer<Scale>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double RadiansToDegrees(double radians)
         {
-            public int Compare(
-#if DOTNET_CORE
-                [AllowNull] Scale x, [AllowNull] Scale y
-#else
-                Scale x, Scale y
-#endif
-                )
-            {
-                return x.latitude.CompareTo(y.latitude);
-            }
+            return radians * 180.0 / Math.PI;
         }
+
         private class LatitudeCompareScale : IComparer<Scale>
         {
-            public int Compare(
 #if DOTNET_CORE
-                [AllowNull] Scale x, [AllowNull] Scale y
+            public int Compare([AllowNull] Scale x, [AllowNull] Scale y)
 #else
-                Scale x, Scale y
+            public int Compare(Scale x, Scale y)
 #endif
-                )
             {
                 return x.theta.CompareTo(y.theta);
             }
@@ -1909,8 +1902,6 @@ namespace MapControl
 
         private static readonly ImmutableSortedSet<Scale> ScalesLookup = 
             Scales.ToImmutableSortedSet(new LatitudeCompareScale());
-        private static readonly ImmutableSortedSet<Scale> ScalesLatitudeLookup =
-            Scales.ToImmutableSortedSet(new ScaleCompareLatitude());
 
         public EckertIVProjection() { }
 
@@ -1922,7 +1913,9 @@ namespace MapControl
         public override Vector GetRelativeScale(Location location)
         {
             var scale = getScale(location);
-            return new Vector(1.0, scale.theta);    //TODO: this is very likely wrong
+            location = new Location(1.0, 1.0);
+            var (x, y) = LocationToMap(scale, LongitudeOffset(location), location.Latitude);
+            return new Vector(x, y);
         }
 
         /// <summary>
@@ -1934,10 +1927,18 @@ namespace MapControl
         public override Point LocationToMap(Location location)
         {
             var scale = getScale(location);
-            var x = xConst * LongitudeOffset(location) * (1 + scale.thetaCos);
-            var y = yConst * scale.thetaSin;
+            var (x, y) = LocationToMap(scale, LongitudeOffset(location), location.Latitude);
 
             return new Point(x, y);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private (double, double) LocationToMap(Scale scale, double longitude, double latitude)
+        {
+            var x = xConst * longitude * (1.0 + scale.thetaCos);
+            var y = yConst * scale.thetaSin;
+
+            return (x, y);
         }
 
         /// <summary>
@@ -1950,24 +1951,19 @@ namespace MapControl
             var θ = Math.Asin(point.Y / yConst);
             var sinθ = Math.Sin(θ);
             var cosθ = Math.Cos(θ);
-            var φ = Math.Asin((θ + sinθ * cosθ + 2.0 * sinθ)
-                / (2.0 + Math.PI / 2.0));
-            var λ = Center.Longitude + 
-                (point.X / (xConst * (1 + cosθ)));
+            var φ = RadiansToDegrees(
+                Math.Asin((θ + sinθ * cosθ + 2.0 * sinθ)
+                / TwoPiHalf));
+            var λ = Center.Longitude + point.X / (xConst * (1.0 + cosθ));
 
             return new Location(φ, λ);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Location getCentered(Location loc)
-        {
-            return new Location(loc.Latitude, LongitudeOffset(loc));
-        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private double LongitudeOffset(Location loc)
         {
-            return loc.Longitude + Center.Longitude;
+            return loc.Longitude - Center.Longitude;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -233,7 +233,8 @@ namespace MapControl
         /// </summary>
         public Vector GetScale(Location location)
         {
-            return ViewTransform.Scale * MapProjection.GetRelativeScale(location);
+            var projectionScale = MapProjection.GetRelativeScale(location);
+            return ViewTransform.Scale * projectionScale;
         }
 
         /// <summary>

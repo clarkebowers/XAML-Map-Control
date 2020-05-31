@@ -28,6 +28,7 @@ namespace MapControl
             2.0 * Wgs84MetersPerDegree / Math.Sqrt(4.0 * Math.PI + Math.PI * Math.PI);
         private static readonly double yConst = 
             2.0 * Math.Sqrt(Math.PI / (4.0 + Math.PI)) * Wgs84EquatorialRadius;
+        private static Location MeasureOffset = new Location(0.2, 0.2);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double DegreesToRadians(double degrees)
@@ -1910,13 +1911,18 @@ namespace MapControl
             get { return true; }
         }
 
-        public override Vector GetRelativeScale(Location location)
-        {
-            var scale = getScale(location);
-            location = new Location(1.0, 1.0);
-            var (x, y) = LocationToMap(scale, LongitudeOffset(location), location.Latitude);
-            return new Vector(x, y);
-        }
+        public override double MaxLatitude => 85.0; //The poles look funny past this latitude
+
+        //public override Vector GetRelativeScale(Location location)
+        //{
+        //    var center = LocationToMap(Center);
+        //    var centerOffset = LocationToMap(Center + MeasureOffset);
+        //    var point = LocationToMap(location);
+        //    var pointOffset = LocationToMap(location + MeasureOffset);
+        //    var centerSize = centerOffset - center;
+        //    var pointSize = pointOffset - point;
+        //    return new Vector(pointSize.X / centerSize.X, pointSize.Y / centerSize.Y);
+        //}
 
         /// <summary>
         /// Given a sphere of radius R, central meridian λ0 and a point with 

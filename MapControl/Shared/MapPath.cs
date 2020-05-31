@@ -79,8 +79,12 @@ namespace MapControl
                     (viewPos.X < 0d || viewPos.X > parentMap.RenderSize.Width ||
                      viewPos.Y < 0d || viewPos.Y > parentMap.RenderSize.Height))
                 {
-                    location = new Location(location.Latitude, parentMap.ConstrainedLongitude(location.Longitude));
-                    viewPos = parentMap.LocationToView(location);
+                    var constrainedLongitude = parentMap.ConstrainedLongitude(location.Longitude);
+                    if (constrainedLongitude != location.Longitude)
+                    {
+                        location = new Location(location.Latitude, constrainedLongitude);
+                        viewPos = parentMap.LocationToView(location);
+                    }
                 }
 
                 var scale = parentMap.GetScale(location);

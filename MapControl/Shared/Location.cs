@@ -65,6 +65,11 @@ namespace MapControl
             return string.Format(CultureInfo.InvariantCulture, "{0:F5},{1:F5}", latitude, longitude);
         }
 
+        public static Location operator+(Location x, Location y)
+        {
+            return new Location(x.latitude + y.latitude, NormalizeLongitude(x.longitude + y.longitude));
+        }
+
         public static Location Parse(string locationString)
         {
             Location location = null;

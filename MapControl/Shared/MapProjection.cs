@@ -22,6 +22,7 @@ namespace MapControl
         public const double Wgs84MetersPerDegree = Wgs84EquatorialRadius * Math.PI / 180d;
         public const double Wgs84Flattening = 1d / 298.257223563;
         public static readonly double Wgs84Eccentricity = Math.Sqrt((2d - Wgs84Flattening) * Wgs84Flattening);
+        public static readonly Vector One = new Vector(1.0, 1.0);
 
         /// <summary>
         /// Gets or sets the projection center.
@@ -46,10 +47,12 @@ namespace MapControl
 
         /// <summary>
         /// Gets the relative map scale at the specified Location.
+        /// Relative to what? the center of the map?
+        /// relative x to y (the two axis)?
         /// </summary>
         public virtual Vector GetRelativeScale(Location location)
         {
-            return new Vector(1d, 1d);
+            return One;
         }
 
         /// <summary>

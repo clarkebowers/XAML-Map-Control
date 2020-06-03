@@ -7,6 +7,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Windows.Media.Media3D;
 
 namespace MapControl
 {
@@ -18,6 +20,20 @@ namespace MapControl
 #endif
     public class Location : IEquatable<Location>
     {
+        public const double Wgs84EquatorialRadius = 6378137d;
+        public const double Wgs84MetersPerDegree = Wgs84EquatorialRadius * Math.PI / 180d;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double DegreesToRadians(double degrees)
+        {
+            return degrees / 180.0 * Math.PI;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double RadiansToDegrees(double radians)
+        {
+            return radians * 180.0 / Math.PI;
+        }
+
         private double latitude;
         private double longitude;
 
@@ -63,6 +79,25 @@ namespace MapControl
         public override string ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, "{0:F5},{1:F5}", latitude, longitude);
+        }
+
+        /// <summary>
+        /// Place on the surface of the earth in cartesian coordinates where
+        /// the origin is the center of the planet.
+        /// 
+        //Here are conversion algorythms: 
+        //https://stackoverflow.com/questions/1185408/converting-from-longitude-latitude-to-cartesian-coordinates
+        //http://www.movable-type.co.uk/scripts/latlong.html
+        /// </summary>
+        /// <returns></returns>
+        public Point3D ToPoint3D()
+        {
+            var lat = DegreesToRadians(Latitude);
+            var lon = DegreesToRadians(Longitude);
+            var x = Wgs84EquatorialRadius * Math.Cos(lat) * Math.Cos(lon);
+            var y = Wgs84EquatorialRadius * Math.Cos(lat) * Math.Sin(lon);
+            var z = Wgs84EquatorialRadius * Math.Sin(lat);
+            return new Point3D(x, y, z);
         }
 
         public static Location operator+(Location x, Location y)

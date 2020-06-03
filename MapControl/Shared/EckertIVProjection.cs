@@ -30,16 +30,6 @@ namespace MapControl
             2.0 * Math.Sqrt(Math.PI / (4.0 + Math.PI)) * Wgs84EquatorialRadius;
         private static Location MeasureOffset = new Location(0.2, 0.2);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double DegreesToRadians(double degrees)
-        {
-            return degrees / 180.0 * Math.PI;
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double RadiansToDegrees(double radians)
-        {
-            return radians * 180.0 / Math.PI;
-        }
 
         private class LatitudeCompareScale : IComparer<Scale>
         {
@@ -63,7 +53,7 @@ namespace MapControl
             public Scale(double l, double th)
             {
                 latitude = l;
-                theta = DegreesToRadians(th);
+                theta = Location.DegreesToRadians(th);
                 thetaSin = Math.Sin(theta);
                 thetaCos = Math.Cos(theta);
             }
@@ -1957,7 +1947,7 @@ namespace MapControl
             var θ = Math.Asin(point.Y / yConst);
             var sinθ = Math.Sin(θ);
             var cosθ = Math.Cos(θ);
-            var φ = RadiansToDegrees(
+            var φ = Location.RadiansToDegrees(
                 Math.Asin((θ + sinθ * cosθ + 2.0 * sinθ)
                 / TwoPiHalf));
             var λ = Center.Longitude + point.X / (xConst * (1.0 + cosθ));

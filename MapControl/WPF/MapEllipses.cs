@@ -47,10 +47,17 @@ namespace MapControl
 
                 if (ParentMap != null && Locations != null)
                 {
-                    group.Clear();
                     var longitudeOffset = GetLongitudeOffset(Location ?? Locations.FirstOrDefault());
 
-                    AddEllipsesLocations(group, Locations, longitudeOffset);
+                    if (group.Count == Locations.Count())
+                    {
+                        UpdateEllipsesLocations(group, Locations, longitudeOffset);
+                    }
+                    else
+                    {
+                        group.Clear();
+                        ((GeometryGroup)Data).Children = AddEllipsesLocations(Locations, longitudeOffset);
+                    }
                 }
             }
         }

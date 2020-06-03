@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 
 namespace MapControl
@@ -64,6 +65,16 @@ namespace MapControl
             base.ClearItems();
         }
 
+        /// <summary>
+        /// single collection of locations
+        /// </summary>
+        /// <param name="locations"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<Location> Flatten()
+        {
+            return this.SelectMany(locs => locs, (locs, l) => l);
+        }
 
         /// <summary>
         /// Find the center of the bounding box of a collection of locations
@@ -72,8 +83,18 @@ namespace MapControl
         /// <returns></returns>
         public static Location Center(PolygonCollection collection)
         {
-            var locations = collection.SelectMany(locs => locs, (locs, l) => l);
-            return LocationCollection.Center(locations);
+            return LocationCollection.Center(collection.Flatten());
+        }
+
+        /// <summary>
+        /// Find the center of the bounding box of a collection of locations
+        /// </summary>
+        /// <param name="locations"></param>
+        /// <returns></returns>
+        public static (Location, Location) Extent(PolygonCollection collection)
+        {
+            return (LocationCollection.Min(collection.Flatten()),
+                LocationCollection.Max(collection.Flatten()));
         }
 
     }

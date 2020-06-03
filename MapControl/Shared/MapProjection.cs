@@ -4,6 +4,7 @@
 
 using System;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 #if WINDOWS_UWP
 using Windows.Foundation;
 #else
@@ -21,11 +22,7 @@ namespace MapControl
         public const double Wgs84MetersPerDegree = Wgs84EquatorialRadius * Math.PI / 180d;
         public const double Wgs84Flattening = 1d / 298.257223563;
         public static readonly double Wgs84Eccentricity = Math.Sqrt((2d - Wgs84Flattening) * Wgs84Flattening);
-
-        /// <summary>
-        /// Gets or sets the WMS 1.3.0 CRS identifier.
-        /// </summary>
-        public string CrsId { get; set; } = string.Empty;
+        public static readonly Vector One = new Vector(1.0, 1.0);
 
         /// <summary>
         /// Gets or sets the projection center.
@@ -41,14 +38,6 @@ namespace MapControl
         }
 
         /// <summary>
-        /// Indicates if this is a web mercator projection, i.e. compatible with MapTileLayer.
-        /// </summary>
-        public virtual bool IsWebMercator
-        {
-            get { return false; }
-        }
-
-        /// <summary>
         /// Gets the absolute value of the minimum and maximum latitude that can be transformed.
         /// </summary>
         public virtual double MaxLatitude
@@ -58,10 +47,12 @@ namespace MapControl
 
         /// <summary>
         /// Gets the relative map scale at the specified Location.
+        /// Relative to what? the center of the map?
+        /// relative x to y (the two axis)?
         /// </summary>
         public virtual Vector GetRelativeScale(Location location)
         {
-            return new Vector(1d, 1d);
+            return One;
         }
 
         /// <summary>
@@ -96,22 +87,15 @@ namespace MapControl
         }
 
         /// <summary>
-        /// Gets the CRS parameter value for a WMS GetMap request.
+        /// Logitude should be +/-180 (π)
         /// </summary>
-        public virtual string GetCrsValue()
+        /// <param name="longitude"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected double NormalizeLongitude(double longitude)
         {
-            return CrsId.StartsWith("AUTO:") || CrsId.StartsWith("AUTO2:")
-                ? string.Format(CultureInfo.InvariantCulture, "{0},1,{1},{2}", CrsId, Center.Longitude, Center.Latitude)
-                : CrsId;
+            return longitude % 180.0;
         }
 
-        /// <summary>
-        /// Gets the BBOX parameter value for a WMS GetMap request.
-        /// </summary>
-        public virtual string GetBboxValue(Rect rect)
-        {
-            return string.Format(CultureInfo.InvariantCulture,
-                "{0},{1},{2},{3}", rect.X, rect.Y, (rect.X + rect.Width), (rect.Y + rect.Height));
-        }
     }
 }

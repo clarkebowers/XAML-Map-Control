@@ -13,11 +13,6 @@ namespace UniversalApp
 
         public MainPage()
         {
-            ImageLoader.HttpClient.DefaultRequestHeaders.Add("User-Agent", "XAML Map Control Test Application");
-            //TileImageLoader.Cache = new MapControl.Caching.ImageFileCache(TileImageLoader.DefaultCacheFolder);
-            //TileImageLoader.Cache = new MapControl.Caching.FileDbCache(TileImageLoader.DefaultCacheFolder);
-            //TileImageLoader.Cache = new MapControl.Caching.SQLiteCache(TileImageLoader.DefaultCacheFolder);
-
             InitializeComponent();
             DataContext = ViewModel;
         }
@@ -30,14 +25,5 @@ namespace UniversalApp
             }
         }
 
-        private void SeamarksChecked(object sender, RoutedEventArgs e)
-        {
-            map.Children.Insert(map.Children.IndexOf(mapGraticule), ViewModel.MapLayers.SeamarksLayer);
-        }
-
-        private void SeamarksUnchecked(object sender, RoutedEventArgs e)
-        {
-            map.Children.Remove(ViewModel.MapLayers.SeamarksLayer);
-        }
     }
 }

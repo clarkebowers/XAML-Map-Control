@@ -18,16 +18,9 @@ namespace MapControl
         private static readonly double maxLatitude = YToLatitude(180d);
 
         public WebMercatorProjection()
-        {
-            CrsId = "EPSG:3857";
-        }
+        { }
 
         public override bool IsNormalCylindrical
-        {
-            get { return true; }
-        }
-
-        public override bool IsWebMercator
         {
             get { return true; }
         }

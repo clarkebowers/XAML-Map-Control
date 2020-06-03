@@ -24,9 +24,8 @@ namespace MapControl.Projections
         private readonly double falseEasting;
         private readonly double falseNorthing;
 
-        public PolarStereographicProjection(string crsId, bool north, double scaleFactor = 1d, double falseEasting = 0d, double falseNorthing = 0d)
+        public PolarStereographicProjection(bool north, double scaleFactor = 1d, double falseEasting = 0d, double falseNorthing = 0d)
         {
-            CrsId = crsId;
             this.north = north;
             this.scaleFactor = scaleFactor;
             this.falseEasting = falseEasting;
@@ -114,15 +113,14 @@ namespace MapControl.Projections
 
     public class UpsNorthProjection : PolarStereographicProjection
     {
-        public UpsNorthProjection() : base("EPSG:32661", true, 0.994, 2e6, 2e6)
+        public UpsNorthProjection() : base(true, 0.994, 2e6, 2e6)
         {
         }
     }
 
     public class UpsSouthProjection : PolarStereographicProjection
     {
-        public UpsSouthProjection() : base("EPSG:32761", false, 0.994, 2e6, 2e6)
-        {
-        }
+        public UpsSouthProjection() : base(false, 0.994, 2e6, 2e6)
+        { }
     }
 }

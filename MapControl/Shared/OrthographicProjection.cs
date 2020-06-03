@@ -14,10 +14,7 @@ namespace MapControl
     /// </summary>
     public class OrthographicProjection : AzimuthalProjection
     {
-        public OrthographicProjection()
-        {
-            CrsId = "AUTO2:42003";
-        }
+        public OrthographicProjection() { }
 
         public override Point LocationToMap(Location location)
         {

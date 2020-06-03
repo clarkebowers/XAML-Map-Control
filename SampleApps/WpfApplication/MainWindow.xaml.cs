@@ -11,12 +11,6 @@ namespace WpfApplication
     {
         public MainWindow()
         {
-            ImageLoader.HttpClient.DefaultRequestHeaders.Add("User-Agent", "XAML Map Control Test Application");
-            TileImageLoader.Cache = new MapControl.Caching.ImageFileCache(TileImageLoader.DefaultCacheFolder);
-            //TileImageLoader.Cache = new MapControl.Caching.FileDbCache(TileImageLoader.DefaultCacheFolder);
-            //TileImageLoader.Cache = new MapControl.Caching.SQLiteCache(TileImageLoader.DefaultCacheFolder);
-            //TileImageLoader.Cache = null;
-
             InitializeComponent();
         }
 
@@ -81,14 +75,5 @@ namespace WpfApplication
             e.Handled = true;
         }
 
-        private void SeamarksChecked(object sender, RoutedEventArgs e)
-        {
-            map.Children.Insert(map.Children.IndexOf(mapGraticule), ((MapViewModel)DataContext).MapLayers.SeamarksLayer);
-        }
-
-        private void SeamarksUnchecked(object sender, RoutedEventArgs e)
-        {
-            map.Children.Remove(((MapViewModel)DataContext).MapLayers.SeamarksLayer);
-        }
     }
 }

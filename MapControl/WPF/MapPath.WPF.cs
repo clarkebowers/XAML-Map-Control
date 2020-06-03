@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -67,23 +68,39 @@ namespace MapControl
             }
         }
 
-        protected void AddEllipsesLocations(
-            GeometryCollection group, 
+        protected void UpdateEllipsesLocations(
+            GeometryCollection group,
+            IEnumerable<Location> locations,
+            double longitudeOffset)
+        {
+            Debug.Assert(group.Count == locations.Count());
+            var i = 0;
+            foreach (var location in locations)
+            {
+                ((EllipseGeometry)group[i]).Center = LocationToView(location, longitudeOffset);
+                i++;
+            }
+        }
+
+        protected GeometryCollection AddEllipsesLocations(
             IEnumerable<Location> locations, 
             double longitudeOffset)
         {
+            var One = new Vector(1, 1);
             var points = locations.Select(location => LocationToView(location, longitudeOffset));
-            foreach (var point in points)
-            {
-                var ellipse = new EllipseGeometry
-                {
-                    RadiusX = 1,
-                    RadiusY = 1,
-                    Center = point,
-                };
+            var elipses = points.Select(p => createEllipseGeometry(p));
+            var group = new GeometryCollection(elipses);
+            return group;
+        }
 
-                group.Add(ellipse);
-            }
+        private EllipseGeometry createEllipseGeometry(Point center)
+        {
+            return new EllipseGeometry
+            {
+                RadiusX = 1,
+                RadiusY = 1,
+                Center = center,
+            };
         }
 
         #endregion

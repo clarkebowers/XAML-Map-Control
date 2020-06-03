@@ -112,6 +112,7 @@
         <map:OrthographicProjection x:Key="OrthographicProjection"/>
         <map:GnomonicProjection x:Key="GnomonicProjection"/>
         <map:StereographicProjection x:Key="StereographicProjection"/>
+        <map:EckertIVProjection x:Key="EckertIVProjection"/>
     </Window.Resources>
 
     <Window.DataContext>
@@ -202,11 +203,6 @@
                     <Slider ToolTip="Image Opacity" Width="100" VerticalAlignment="Center"
                             Minimum="0" Maximum="1" Value="{Binding Opacity, ElementName=mapImage}"/>
                 </StackPanel>
-                <CheckBox ToolTip="Seamarks Overlay" Margin="7" VerticalAlignment="Bottom" Content="Seamarks"
-                          Checked="SeamarksChecked" Unchecked="SeamarksUnchecked"/>
-                <ComboBox ToolTip="Map Layer" Width="200" Margin="5" VerticalAlignment="Bottom"
-                          ItemsSource="{Binding MapLayers.MapLayerNames}"
-                          SelectedItem="{Binding MapLayers.CurrentMapLayerName}"/>
                 <ComboBox x:Name="projectionComboBox" ToolTip="Map Projection" Width="120" Margin="5" VerticalAlignment="Bottom"
                           SelectedValuePath="Tag" SelectedIndex="0">
                     <ComboBoxItem Content="Web Mercator" Tag="{StaticResource WebMercatorProjection}"/>
@@ -215,6 +211,7 @@
                     <ComboBoxItem Content="Orthographic" Tag="{StaticResource OrthographicProjection}"/>
                     <ComboBoxItem Content="Gnomonic" Tag="{StaticResource GnomonicProjection}"/>
                     <ComboBoxItem Content="Stereographic" Tag="{StaticResource StereographicProjection}"/>
+                    <ComboBoxItem Content="Eckert IV" Tag="{StaticResource EckertIVProjection}"/>
                 </ComboBox>
             </StackPanel>
         </Grid>

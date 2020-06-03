@@ -19,9 +19,7 @@ namespace MapControl
     public class EquirectangularProjection : MapProjection
     {
         public EquirectangularProjection()
-        {
-            CrsId = "EPSG:4326";
-        }
+        { }
 
         public override bool IsNormalCylindrical
         {
@@ -49,12 +47,5 @@ namespace MapControl
                 point.X / Wgs84MetersPerDegree);
         }
 
-        public override string GetBboxValue(Rect rect)
-        {
-            return string.Format(CultureInfo.InvariantCulture,
-                CrsId == "CRS:84" ? "{0},{1},{2},{3}" : "{1},{0},{3},{2}",
-                rect.X / Wgs84MetersPerDegree, rect.Y / Wgs84MetersPerDegree,
-                (rect.X + rect.Width) / Wgs84MetersPerDegree, (rect.Y + rect.Height) / Wgs84MetersPerDegree);
-        }
     }
 }

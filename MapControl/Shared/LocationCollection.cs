@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media.Media3D;
 
 namespace MapControl
 {
@@ -28,6 +29,11 @@ namespace MapControl
         public LocationCollection(params Location[] locations)
             : base(locations)
         {
+        }
+
+        public Point3DCollection ToPoint3DCollection()
+        {
+            return new Point3DCollection(this.Select(p => p.ToPoint3D()));
         }
 
         public static LocationCollection Parse(string s)
